@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/4bbd9b93867b45eebf6a20a51a57d0e3/artifacts
+end_time: 1734759574515
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 4bbd9b93867b45eebf6a20a51a57d0e3
+run_name: big-elk-859
+run_uuid: 4bbd9b93867b45eebf6a20a51a57d0e3
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734759574469
+status: 3
+tags: []
+user_id: Appsquadz
