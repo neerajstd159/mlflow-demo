@@ -3,7 +3,7 @@ import pandas as pd
 import logging
 import yaml
 import pickle
-from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 
 # logging configuration
 logger = logging.getLogger('model building')
@@ -37,10 +37,10 @@ def load_data(data_path: str) -> pd.DataFrame:
         raise
 
 
-def train_model(X_train: np.ndarray, y_train: np.ndarray) -> LogisticRegression:
-    """train the logistic regression model"""
+def train_model(X_train: np.ndarray, y_train: np.ndarray) -> RandomForestClassifier:
+    """train the random  forest model"""
     try:
-        lr = LogisticRegression(C=1, solver='liblinear', penalty='l2')
+        lr = RandomForestClassifier(n_estimators=200, min_samples_leaf=2, min_samples_split=5)
         lr.fit(X_train, y_train)
         logger.debug("model training complete")
         return lr
@@ -63,12 +63,12 @@ def save_model(model, save_path: str) -> None:
 def main():
     try:
         # load data
-        train_data = load_data('./data/processed/train_tfidf.csv')
+        train_data = load_data('./data/processed/train_bow.csv')
         X_train = train_data.iloc[:,:-1].values
         y_train = train_data.iloc[:,-1].values
 
         # train model
-        lr = train_model(X_train, y_tarin)
+        lr = train_model(X_train, y_train)
 
         # save model
         save_model(lr, 'models/model.pkl')

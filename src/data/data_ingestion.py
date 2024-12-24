@@ -28,6 +28,7 @@ def load_params(params_path: str) -> dict:
         with open(params_path, 'r') as file:
             params = yaml.safe_load(file)
         logger.debug("parameters retrieved from %s", params_path)
+        return params
     except FileNotFoundError:
         logger.error("file not found: %s", params_path)
         raise
@@ -84,12 +85,13 @@ def save_data(train_df: pd.DataFrame, test_df: pd.DataFrame, data_path: str) -> 
 
 def main():
     try:
-        params = load_params(params_path='params.yaml')
+        params = load_params(params_path='./params.yaml')
         test_size = params['data_ingestion']['test_size']
         df = load_data(data_url='https://raw.githubusercontent.com/campusx-official/jupyter-masterclass/main/tweet_emotions.csv')
+        df.dropna(inplace=True)
         final_df = preprocess_data(df)
         train_data, test_data = train_test_split(final_df, test_size=test_size, random_state=1)
-        save_data(train_data, test_data, data_path='./data')
+        save_data(train_data, test_data, data_path='data')
     except Exception as e:
         logger.error(f"Failed to complete the data ingestion process: {e}")
         print(f"Error: {e}")

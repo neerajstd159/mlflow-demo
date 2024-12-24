@@ -38,7 +38,7 @@ def replace_pattern(pattern, text):
 
 
 def replace_pattern_with_pattern(pattern1, pattern2, text):
-    """replace patter1 with pattern2"""
+    """replace pattern1 with pattern2"""
     text = re.sub(pattern1, pattern2, text)
     return text
 
@@ -68,7 +68,7 @@ def normalize_text(df: pd.DataFrame) -> pd.DataFrame:
         df['content'] = df['content'].apply(lambda x: replace_pattern(user_pattern, x))
         logger.debug("removed username")
         # remove non-alphanumeric letters
-        pattern = r"[a-zA-Z0-9]"
+        pattern = r"[^a-zA-Z0-9]"
         df['content'] = df['content'].apply(lambda x: replace_pattern(pattern, x))
         logger.debug("removed non alpha-numeric letters")
         # remove letters that repeated more than 2 times
@@ -84,6 +84,7 @@ def normalize_text(df: pd.DataFrame) -> pd.DataFrame:
         lemmatizer = WordNetLemmatizer()
         df['content'] = df['content'].apply(lambda x: apply_lemmatization(lemmatizer, x))
         logger.debug("applied lemmatization")
+        return df
     except Exception as e:
         logger.error(f"Some error occured: {e}")
         raise
