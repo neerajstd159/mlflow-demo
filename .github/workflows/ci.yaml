@@ -7,17 +7,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    
+
       -name: checkout code
-        uses: actions/checkout@v3
+      uses: actions/checkout@v3
 
       -name: setup python
-        uses: actions/setup-python@v2
+      uses: actions/setup-python@v2
         with:
           python-version: '3.9'
 
       -name: cache for dependencies
-        uses: actions/cache@v3
+      uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
@@ -25,11 +25,11 @@ jobs:
             ${{ runner.os }}-pip-
 
       -name: install deps
-        run: |
+      run: |
           pip install -r requirements.txt
 
       -name: run pipeline
-        env:
+      env:
           DAGSHUB_PAT: ${{ secrets.DAGSHUB_PAT }}
-        run: |
+      run: |
           dvc repro
