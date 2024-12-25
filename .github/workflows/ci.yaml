@@ -1,35 +1,41 @@
 name: Deploy
 
-on: push
+on: 
+  push:
+    branches:
+      - main  # Specify the branch to trigger the action, if needed
 
 jobs:
   CI:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      -name: checkout code
-      uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
 
-      -name: setup python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
+      - name: Cache for dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
-      -name: cache for dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-
-      -name: install deps
-      run: |
+      - name: Install dependencies
+        run: |
           pip install -r requirements.txt
 
-      -name: run pipeline
-      env:
+      - name: Install DVC
+        run: |
+          pip install dvc
+
+      - name: Run pipeline
+        env:
           DAGSHUB_PAT: ${{ secrets.DAGSHUB_PAT }}
-      run: |
+        run: |
           dvc repro
