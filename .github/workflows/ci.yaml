@@ -3,7 +3,7 @@ name: Deploy
 on: 
   push:
     branches:
-      - master  # Specify the branch to trigger the action, if needed
+      - master
 
 jobs:
   CI:
