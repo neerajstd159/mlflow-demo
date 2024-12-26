@@ -25,6 +25,9 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
+            
+      - name: Add placeholder README.rst
+        run: echo "Temporary README" > README.rst
 
       - name: Install dependencies
         run: |
